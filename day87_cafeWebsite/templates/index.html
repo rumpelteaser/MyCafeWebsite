@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>List of Cafes</title>
+        <link rel="stylesheet" href="static/css/styles.css" />
+    </head>
+
+    <body>
+
+    <!-- Page Header (fixed on top by means of a JS function) -->
+    <div class="header" id="myHeader">
+        <!-- Page Title -->
+        <h1>My Favorite Cafes</h1>
+        <!-- Add Cafe button (presents a form to insert a new cafe in the Cafe DB) -->
+        <a class="btn" href="{{ url_for('add_cafe') }}"><b>Add New Cafe</b></a>
+        <!-- Filters Bar -->
+        <p class="filters"><b>Filters:</b>
+            &nbsp;&nbsp;&nbsp;
+        {% if filter_on_restroom == True: %}
+            <a class="btn-on" href="{{ url_for('set_filter', filter_id='Restroom') }}">
+                <b>🚻 &nbsp;Restroom</b>
+            </a>
+        {% else: %}
+            <a class="btn-off" href="{{ url_for('set_filter', filter_id='Restroom') }}">
+                <b>🚻 &nbsp;Restroom</b>
+            </a>
+        {% endif %}
+            &nbsp;&nbsp;&nbsp;
+        {% if filter_on_network == True: %}
+            <a class="btn-on" href="{{ url_for('set_filter', filter_id='WiFi') }}">
+                <b>&nbsp;&nbsp;&nbsp;&nbsp;📶 &nbsp;WiFi&nbsp;&nbsp;&nbsp;&nbsp;</b>
+            </a>
+        {% else: %}
+            <a class="btn-off" href="{{ url_for('set_filter', filter_id='WiFi') }}">
+                <b>&nbsp;&nbsp;&nbsp;&nbsp;📶 &nbsp;WiFi&nbsp;&nbsp;&nbsp;&nbsp;</b>
+            </a>
+        {% endif %}
+            &nbsp;&nbsp;&nbsp;
+        {% if filter_on_power == True: %}
+            <a class="btn-on" href="{{ url_for('set_filter', filter_id='Sockets') }}">
+                <b>&nbsp;&nbsp;🔌 &nbsp;Sockets&nbsp;&nbsp;</b>
+            </a>
+        {% else: %}
+            <a class="btn-off" href="{{ url_for('set_filter', filter_id='Sockets') }}">
+                <b>&nbsp;&nbsp;🔌 &nbsp;Sockets&nbsp;&nbsp;</b>
+            </a>
+        {% endif %}
+            &nbsp;&nbsp;&nbsp;
+        {% if filter_on_contact == True: %}
+            <a class="btn-on" href="{{ url_for('set_filter', filter_id='Takes_Calls') }}">
+                <b>☎️&nbsp;Takes Calls</b>
+            </a>
+        {% else: %}
+            <a class="btn-off" href="{{ url_for('set_filter', filter_id='Takes_Calls') }}">
+                <b>☎️&nbsp;Takes Calls</b>
+            </a>
+        {% endif %}
+        </p>
+        <!-- Link to JS function for fixing the header section on top -->
+        <script src="static/js/myScript.js"></script>
+    </div>
+
+    <!-- Main Content (scrollable sequence of cafes, presented in alternate colors) -->
+    <div class="content">
+    {% if cafes == []: %}
+        <p>List is empty.</p>
+    {% else: %}
+        {% for cafe in cafes %}
+                {% if (cafe.id%2 == 1): %}
+                    <div class="cafe_item" style="background:#e4f9f5">
+                {% else: %}
+                    <div class="cafe_item" style="background:#caf7e3">
+                {% endif %}
+                        <img class="cafe-img"
+                             src={{cafe.img_url}}
+                             alt="No Image Available"
+                             width="200" height="176">
+                        <h2>{{ cafe.name }}</h2>
+                        <p>Location: {{ cafe.location }}
+                           &nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
+                           Map Info: <a href={{cafe.map_url}}>{{cafe.map_url}}</a>
+                        </p>
+                        <p>Coffee Price: {{ cafe.coffee_price }}</p>
+                        <p>Seats: {{ cafe.seats }}
+                        {% if cafe.has_toilet: %}
+                            &nbsp;&nbsp;&nbsp;🚻 Restroom
+                        {% endif %}
+                        {% if cafe.has_wifi: %}
+                            &nbsp;&nbsp;&nbsp;📶 WiFi
+                        {% endif %}
+                        {% if cafe.has_sockets: %}
+                            &nbsp;&nbsp;&nbsp;🔌 Sockets
+                        {% endif %}
+                        {% if cafe.can_take_calls: %}
+                            &nbsp;&nbsp;&nbsp;☎️Takes Calls
+                        {% endif %}
+                        </p>
+                        <br>
+                        <a class="btn" href="{{ url_for('delete_cafe', cafe_id=cafe.id) }}">
+                            <b>Remove From List</b>
+                        </a>
+                        <br>
+                        <br>
+                {% if (cafe.id%2 == 1): %}
+                    </div>
+                {% else: %}
+                    </div>
+                {% endif %}
+        {% endfor %}
+    {% endif %}
+    </div>
+
+
+    </body>
+
+</html>
