@@ -57,6 +57,11 @@
                 <b>☎️&nbsp;Takes Calls</b>
             </a>
         {% endif %}
+        <!-- Button to reset all filters -->
+        &nbsp;&nbsp;&nbsp;
+        <a class="btn" href="{{ url_for('set_filter', filter_id='Reset_All') }}">
+            <b>Reset All Filters</b>
+        </a>
         </p>
         <!-- Link to JS function for fixing the header section on top -->
         <script src="static/js/myScript.js"></script>
