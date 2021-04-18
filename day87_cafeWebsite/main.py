@@ -142,12 +142,17 @@ def set_filter(filter_id):
     #print(filter_id)
     if filter_id == "Restroom":
         filters.on_toilet = not filters.on_toilet
-    if filter_id == "WiFi":
+    elif filter_id == "WiFi":
         filters.on_wifi = not filters.on_wifi
-    if filter_id == "Sockets":
+    elif filter_id == "Sockets":
         filters.on_sockets = not filters.on_sockets
-    if filter_id == "Takes_Calls":
+    elif filter_id == "Takes_Calls":
         filters.on_calls = not filters.on_calls
+    elif filter_id == "Reset_All":
+        filters.on_toilet = False
+        filters.on_wifi = False
+        filters.on_sockets = False
+        filters.on_calls = False
     return redirect(url_for('home'))
 
 # Run the Application
