@@ -139,7 +139,6 @@ def delete_cafe(cafe_id):
 # Implement "Filter" action
 @app.route("/filter/<filter_id>")
 def set_filter(filter_id):
-    #print(filter_id)
     if filter_id == "Restroom":
         filters.on_toilet = not filters.on_toilet
     elif filter_id == "WiFi":
