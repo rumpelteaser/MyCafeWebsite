@@ -52,23 +52,22 @@ class AddingForm(FlaskForm):
 # Define Filters class
 class Filters:
     # Define and initializefilters
-    def __init__(self):
-        self.on_toilet = False
-        self.on_wifi = False
-        self.on_sockets = False
-        self.on_calls = False
+    on_toilet = False
+    on_wifi = False
+    on_sockets = False
+    on_calls = False
     # Define function to check if a cafe respects the applied filters
-    def selected(self, cafe):
-        if self.on_toilet and not cafe.has_toilet:
+    @classmethod
+    def selected(cls, cafe):
+        if Filters.on_toilet and not cafe.has_toilet:
             return False
-        if self.on_wifi and not cafe.has_wifi:
+        if Filters.on_wifi and not cafe.has_wifi:
             return False
-        if self.on_sockets and not cafe.has_sockets:
+        if Filters.on_sockets and not cafe.has_sockets:
             return False
-        if self.on_calls and not cafe.can_take_calls:
+        if Filters.on_calls and not cafe.can_take_calls:
             return False
         return True
-filters = Filters()
 
 # Display Main Page
 @app.route('/')
@@ -76,15 +75,15 @@ def home():
     all_cafes = db.session.query(Cafe).all()
     #selected_cafes = []
     #for cafe in all_cafes:
-    #    if filters.selected(cafe):
+    #    if Filters.selected(cafe):
     #        selected_cafes.append(cafe)
-    selected_cafes = [cafe for cafe in all_cafes if filters.selected(cafe)]
+    selected_cafes = [cafe for cafe in all_cafes if Filters.selected(cafe)]
     return render_template("index.html",
                            cafes=selected_cafes,
-                           filter_on_restroom=filters.on_toilet,
-                           filter_on_network=filters.on_wifi,
-                           filter_on_power=filters.on_sockets,
-                           filter_on_contact=filters.on_calls)
+                           filter_on_restroom=Filters.on_toilet,
+                           filter_on_network=Filters.on_wifi,
+                           filter_on_power=Filters.on_sockets,
+                           filter_on_contact=Filters.on_calls)
 
 # Display "Add Cafe" form
 @app.route("/add", methods=["GET", "POST"])
@@ -140,18 +139,18 @@ def delete_cafe(cafe_id):
 @app.route("/filter/<filter_id>")
 def set_filter(filter_id):
     if filter_id == "Restroom":
-        filters.on_toilet = not filters.on_toilet
+        Filters.on_toilet = not Filters.on_toilet
     elif filter_id == "WiFi":
-        filters.on_wifi = not filters.on_wifi
+        Filters.on_wifi = not Filters.on_wifi
     elif filter_id == "Sockets":
-        filters.on_sockets = not filters.on_sockets
+        Filters.on_sockets = not Filters.on_sockets
     elif filter_id == "Takes_Calls":
-        filters.on_calls = not filters.on_calls
+        Filters.on_calls = not Filters.on_calls
     elif filter_id == "Reset_All":
-        filters.on_toilet = False
-        filters.on_wifi = False
-        filters.on_sockets = False
-        filters.on_calls = False
+        Filters.on_toilet = False
+        Filters.on_wifi = False
+        Filters.on_sockets = False
+        Filters.on_calls = False
     return redirect(url_for('home'))
 
 # Run the Application
