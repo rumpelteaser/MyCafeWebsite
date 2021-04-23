@@ -49,9 +49,9 @@ class AddingForm(FlaskForm):
     coffee_price = StringField('Coffee Price: ')
     submit = SubmitField('Add Cafe')
 
-# Define Filters class
+# Define Filters class (to be used with class variables and static methods)
 class Filters:
-    # Define and initializefilters
+    # Define and initialize filters
     on_toilet = False
     on_wifi = False
     on_sockets = False
